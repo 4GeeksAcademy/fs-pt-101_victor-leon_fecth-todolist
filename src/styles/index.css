@@ -1,11 +1,93 @@
-/* 
+body {
+  background: #ebf2ff;
+  margin: 0;
+  font-family: sans-serif;
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-*/
+p {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.task-input {
+  width: 100%;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.task-input:focus {
+  outline: none;
+  border-color: #82b1ff;
+}
+
+.task-counter {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.task-item {
+  background: #fafafa;
+  padding: 12px 20px;
+  margin-bottom: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.task-item:hover .delete-item-button {
+  opacity: 1;
+}
+
+.delete-all-button {
+  background: #e57373;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-all-button:hover {
+  background: #d32f2f;
+}
+
+.delete-item-button {
+  background: transparent;
+  border: none;
+  color: #e57373;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.delete-item-button:hover {
+  color: #d32f2f;
+}
