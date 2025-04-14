@@ -9,11 +9,11 @@ const DELETE_API = 'https://playground.4geeks.com/todo/todos';
 const TaskApp = () => {
   const [tasks, setTasks] = useState([]);
 
-  // Obtener tareas usando GET a USER_API
+  // Obtener tareas
   const fetchTasks = async () => {
     try {
       const response = await fetch(USER_API, { headers: { accept: 'application/json' } });
-      if (!response.ok) throw new Error(`Error ${response.status}`);
+      if (!response.ok) throw new Error(`${response.status}`);
       const data = await response.json();
       setTasks(data.todos || []);
     } catch (error) {
@@ -21,8 +21,30 @@ const TaskApp = () => {
     }
   };
 
+  // Verificar si usuario existe, si no, lo crea
+  const CheckUser = async () => {
+    try {
+      const response = await fetch(USER_API, { headers: { accept: 'application/json' } });
+      if (response.status === 404) {
+        const createResponse = await fetch(USER_API, {
+          method: 'POST',
+          headers: { accept: 'application/json' },
+          body: ''
+        });
+        if (!createResponse.ok) {
+          console.error(`Error al crear el usuario: ${createResponse.status}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error al verificar o crear usuario:', error);
+    }
+  };
+
   useEffect(() => {
-    fetchTasks();
+    (async () => {
+      await CheckUser();
+      await fetchTasks();
+    })();
   }, []);
 
   // Agregar tarea
@@ -57,7 +79,7 @@ const TaskApp = () => {
         method: 'DELETE',
         headers: { accept: 'application/json' }
       });
-      if (!response.ok) throw new Error(`Error ${response.status}`);
+      if (!response.ok) throw new Error(`${response.status}`);
       await fetchTasks();
     } catch (error) {
       console.error('Error al eliminar tarea:', error);
@@ -70,14 +92,16 @@ const TaskApp = () => {
       await Promise.all(
         tasks.map(async (task) => {
           if (!task.id) {
-            console.warn('Tarea sin id, no se puede eliminar', task);
+            console.warn('Tarea sin id, no se puede eliminar:', task);
             return;
           }
           const response = await fetch(`${DELETE_API}/${task.id}`, {
             method: 'DELETE',
             headers: { accept: 'application/json' }
           });
-          if (!response.ok) console.warn(`No se pudo eliminar la tarea ${task.id} (Error ${response.status})`);
+          if (!response.ok) {
+            console.warn(`No se pudo eliminar la tarea ${task.id} (${response.status})`);
+          }
         })
       );
       await fetchTasks();
